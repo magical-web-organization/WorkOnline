@@ -1,3 +1,5 @@
+---
+---
 (function(document) {
   var toggle = document.querySelector('.sidebar-toggle');
   var sidebar = document.querySelector('#sidebar');
@@ -34,6 +36,217 @@
 	  }
 	});
 	   
-
+	   
 
 })(document);
+
+	function admin(){
+		var edit_button = document.createElement('button');
+		edit_button.id = 'edit_button';
+		edit_button.innerText = 'Edit';
+		edit_button.addEventListener('click', edit);
+		edit_button.classList.add('sticky-button');
+		document.body.appendChild(edit_button);
+	}
+
+
+var Editor, editor;
+
+	async function edit(){
+		document.querySelector('#edit_button').remove();
+		
+		document.querySelector('#editor').innerHTML = "";
+		
+		
+		var toast_css = document.createElement( "link" );
+		toast_css.href = "/public/css/toastui-editor.css";
+		toast_css.type = "text/css";
+		toast_css.rel = "stylesheet";
+		toast_css.media = "screen,print";
+
+		document.getElementsByTagName( "head" )[0].appendChild( toast_css );
+		
+		
+		var toast_js = document.createElement( "script" );
+		toast_js.src = "/public/js/toastui-editor-all.min.js";
+
+		document.getElementsByTagName( "head" )[0].appendChild( toast_js );
+		
+		toast_js.onload = async function(){
+			
+			Editor = toastui.Editor;
+			
+			// fetch the md
+			let request = await fetch("http://localhost/magical-web-presence/Markdownitor.php?type=fetch&repo={{site.repo}}&post="+window.location.pathname);
+			let raw_md = await request.text();
+			raw_md = raw_md.slice(3); // remove first "---"
+			
+			var separator = '---';
+			var index = raw_md.indexOf(separator, separator.length);
+			var raw_front_matter = raw_md.slice(0, index);
+			var markdown_body = raw_md.slice(index + separator.length).trim();
+			
+			
+			
+			var parsed_fm = raw_front_matter.split("\n");
+			
+			var kvArr = [];
+			
+			parsed_fm.forEach(function(line, indexofline){
+				if(line.includes(":")){
+					var parsed_line = line.split(":");
+					var separator = ':';
+					var index = line.indexOf(separator, separator.length);
+					var keyfm = line.slice(0, index);
+					var valfm = line.slice(index + separator.length).trim();
+					
+					if(parsed_line[0]){
+						kvArr.push([keyfm, valfm]);
+					}
+				}
+			});
+			
+			const form = document.createElement('form');
+			form.id = "frontmatter";
+			
+			const div = document.createElement('div');
+			div.classList.add('two-column');
+			
+			kvArr.forEach(function(kv, key){
+				const row = document.createElement('div');
+				row.classList.add('row');
+				if(["layout", "date", "slug", "original"].includes(kv[0])){
+					row.style.display = "none";
+				}
+
+				const key_div = document.createElement('div');
+				key_div.classList.add('key');
+				key_div.textContent = kv[0];
+
+				const value_div = document.createElement('div');
+				value_div.classList.add('value');
+				const value_input = document.createElement('input');
+				value_input.name = kv[0];
+				value_input.value = kv[1];
+				value_div.appendChild(value_input);
+
+				row.appendChild(key_div);
+				row.appendChild(value_div);
+				div.appendChild(row);
+			});
+			
+			form.appendChild(div);
+			document.getElementsByClassName( "article-body" )[0].prepend( form );
+			
+			
+			
+
+			editor = new Editor({
+				el: document.querySelector('#editor'),
+				height: 'auto',//auto
+				initialEditType: 'wysiwyg',//markdown
+				initialValue: markdown_body,
+				previewStyle: 'tab',//vertical 
+				usageStatistics: false,
+			});
+
+
+			var save_button = document.createElement('button');
+			save_button.id = 'save_button';
+			save_button.innerText = 'Save';
+			save_button.addEventListener('click', save);
+			save_button.classList.add('sticky-button');
+			document.body.appendChild(save_button);
+			
+			var delete_button = document.createElement('button');
+			delete_button.id = 'delete_button';
+			delete_button.innerText = 'Delete';
+			delete_button.addEventListener('click', del);
+			delete_button.classList.add('sticky-button');
+			document.body.appendChild(delete_button);
+			
+			
+		}
+	}
+	
+	function save(){
+		document.querySelector('#save_button').disabled = true;
+		document.querySelector('#save_button').style.backgroundColor = 'green';
+		setTimeout(function(){
+			document.querySelector('#save_button').disabled = false;
+			document.querySelector('#save_button').style.backgroundColor = 'blue';
+		},2500);
+		// get the md and post to php
+		
+		
+		var markdown_to_save = editor.getMarkdown();
+		
+		const form = document.getElementById('frontmatter');
+		
+		const formData = new FormData(form);
+		formData.append('markdown', markdown_to_save);
+		
+		var markdown = "---\n";
+		
+		for (let [key, val] of formData.entries()) {
+			if(key != "markdown"){
+				markdown = markdown + key + ": " + val + "\n";
+			}
+		}
+		
+		var markdown = markdown + "---\n";
+		var markdown = markdown + markdown_to_save;
+
+
+		const formToSend = new FormData();
+		formToSend.append('markdown', markdown);
+
+
+		const options = {
+		  method: 'POST',
+		  body: formToSend
+		};
+
+		fetch("http://localhost/magical-web-presence/Markdownitor.php?type=save&repo={{site.repo}}&post="+window.location.pathname, options)
+		  .then(response => {
+			if (response.ok) {
+			  return response.json();
+			} else {
+			  throw new Error('Network response was not ok');
+			}
+		  })
+		  .then(data => {
+			console.log(data);
+		  })
+		  .catch(error => {
+			console.error('Error:', error);
+		  });
+		  
+		  
+	}
+	
+	function del(){
+		document.querySelector('#delete_button').disabled = true;
+		
+		fetch("http://localhost/magical-web-presence/Markdownitor.php?type=delete&repo={{site.repo}}&post="+window.location.pathname)
+		  .then(response => {
+			if (response.ok) {
+			  return response.json();
+			} else {
+			  throw new Error('Network response was not ok');
+			}
+		  })
+		  .then(data => {
+			console.log(data);
+			if(data == "1"){
+				window.location.href = "/";
+			}else{
+				alert("Err: delete failed.");
+			}
+		  })
+		  .catch(error => {
+			console.error('Error:', error);
+		  });
+		  
+	}
+	

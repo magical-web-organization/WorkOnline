@@ -109,10 +109,6 @@ p {
   margin-bottom: 1rem;
 }
 
-strong {
-  color: #303030;
-}
-
 
 /* Lists */
 ul, ol, dl {
@@ -155,8 +151,8 @@ pre {
 code {
   padding: .25em .5em;
   font-size: 85%;
-  color: #bf616a;
-  background-color: #f9f9f9;
+  color: #fff;
+  background-color: #bbb;
   border-radius: 3px;
 }
 pre {
@@ -170,7 +166,7 @@ pre {
   white-space: pre-wrap;
   word-break: break-all;
   word-wrap: break-word;
-  background-color: #f9f9f9;
+  background-color: #bbb;
 }
 pre code {
   padding: 0;
@@ -214,7 +210,6 @@ pre code {
 blockquote {
   padding: .5rem 1rem;
   margin: .8rem 0;
-  color: #7a7a7a;
   border-left: .25rem solid #e5e5e5;
 }
 blockquote p:last-child {
@@ -248,7 +243,7 @@ th {
 }
 tbody tr:nth-child(odd) td,
 tbody tr:nth-child(odd) th {
-  background-color: #f9f9f9;
+  //background-color: #f9f9f9;
 }
 
 
