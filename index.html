@@ -2,21 +2,20 @@
 layout: default
 title: Home
 ---
-{% for collection in site.collections %}
-	{% if collection.label != "posts" %}
-	  <!--<h2>{{ collection.name }} Posts:</h2>-->
+{%- for collection in site.collections -%}
+	{%- if collection.label != "posts" -%}
 	  <ul>
-		{% for item in site[collection.label] reversed %}
+		{%- for item in site[collection.label] reversed -%}
 		   <div class="post">
 			<h2 class="post-title">
 			  <a href="{{ item.url | absolute_url }}">
-				{{ item.title }}
+				{{- item.title -}}
 			  </a>
 			</h2>
 			{{ item.description  }}
 		  </div>
-		{% endfor %}
+		{%- endfor -%}
 	  </ul>
-	{% endif %}
-{% endfor %}
+	{%- endif -%}
+{%- endfor -%}
 

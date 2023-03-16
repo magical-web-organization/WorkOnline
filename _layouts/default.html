@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-us">
-
-  {% include head.html %}
-
+  {%- include head.html -%}
   <body>
-
-    {% include sidebar.html %}
-
-    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
-         content to avoid any CSS collisions with our real content. -->
+    {%- include sidebar.html -%}
     <div class="wrap">
       <div class="masthead">
         <div class="container">
@@ -16,29 +10,21 @@
             <a href="{{ '/' | absolute_url }}" title="Home">{{ site.title }}</a>
             <small>{{ site.tagline }}</small>
           </h3>
-		  
-			  
-		<!-- Controller Row -->
-		<div class="controller-row">
-			<span>&#9788;</span>
-		  <label class="switch">
-			<input id="toggler" type="checkbox">
-			<span class="slider round"></span>
-		  </label>
+		  <div class="controller-row">
+		  	<span>&#9788;</span>
+		    <label class="switch">
+			  <input id="toggler" type="checkbox">
+			  <span class="slider round"></span>
+		    </label>
 			<span>&#x1F319;</span>
-		</div><!-- End of controller row -->
-		
-	
+		  </div>
         </div>
       </div>
-
       <div class="container content">
-        {{ content }}
+        {{- content -}}
       </div>
     </div>
-
     <label for="sidebar-checkbox" class="sidebar-toggle"></label>
-
     <script src={{ '/public/js/script.js' | absolute_url }}></script>
   </body>
 </html>
