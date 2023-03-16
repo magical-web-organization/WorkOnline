@@ -88,7 +88,7 @@ var Editor, editor;
 			
 			
 			
-			var parsed_fm = raw_front_matter.split("\n");
+			var parsed_fm = raw_front_matter.split("\r\n");
 			
 			var kvArr = [];
 			
@@ -186,15 +186,15 @@ var Editor, editor;
 		const formData = new FormData(form);
 		formData.append('markdown', markdown_to_save);
 		
-		var markdown = "---\n";
+		var markdown = "---\r\n";
 		
 		for (let [key, val] of formData.entries()) {
 			if(key != "markdown"){
-				markdown = markdown + key + ": " + val + "\n";
+				markdown = markdown + key + ": " + val + "\r\n";
 			}
 		}
 		
-		var markdown = markdown + "---\n";
+		var markdown = markdown + "---\r\n";
 		var markdown = markdown + markdown_to_save;
 
 
