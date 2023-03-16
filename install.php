@@ -42,7 +42,9 @@ description: '$description'
 url: $url
 repo: $repo
 google_analytics_id: $ga_id
+
 permalink: ':categories/:title.html'
+timezone: Europe/Istanbul
 
 exclude: [\"z_serve.bat\", \"*.ai\", \"install.php\"]
 
