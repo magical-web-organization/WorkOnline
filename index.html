@@ -2,6 +2,19 @@
 layout: default
 title: Home
 ---
+<ul>
+{%- for item in site.documents reversed -%}
+   <div class="post">
+	<h2 class="post-title">
+	  <a href="{{ item.url | absolute_url }}">
+		{{- item.title -}}
+	  </a>
+	</h2>
+	{{ item.description  }}
+  </div>
+{%- endfor -%}
+</ul>
+{%- comment -%}
 {%- for collection in site.collections -%}
 	{%- if collection.label != "posts" -%}
 	  <ul>
@@ -18,4 +31,4 @@ title: Home
 	  </ul>
 	{%- endif -%}
 {%- endfor -%}
-
+{%- endcomment -%}
