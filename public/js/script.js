@@ -110,30 +110,41 @@ var Editor, editor;
 			form.id = "frontmatter";
 			
 			const div = document.createElement('div');
-			div.classList.add('two-column');
 			
 			kvArr.forEach(function(kv, key){
 				const row = document.createElement('div');
 				row.classList.add('row');
-				if(["layout", "date", "slug", "original"].includes(kv[0])){
+				if(["layout", "date", "slug", "original", "last_modified_at"].includes(kv[0])){
 					row.style.display = "none";
 				}
 
-				const key_div = document.createElement('div');
-				key_div.classList.add('key');
-				key_div.textContent = kv[0];
-
 				const value_div = document.createElement('div');
 				value_div.classList.add('value');
-				const value_input = document.createElement('input');
+				if(kv[0] == "description"){
+					var value_input = document.createElement('textarea');
+				}else{
+					var value_input = document.createElement('input');
+				}
+				
 				value_input.name = kv[0];
 				value_input.value = kv[1];
 				value_div.appendChild(value_input);
+				
+				const aibtn_div = document.createElement('div');
+				aibtn_div.classList.add('aibtn');
+				var aibtn = document.createElement('button');
+				
+				aibtn.type = "button";
+				aibtn.classList.add('airw');
+				aibtn.innerHTML = "rw";
+				aibtn_div.appendChild(aibtn);
+				aibtn.addEventListener('click', rw);
 
-				row.appendChild(key_div);
 				row.appendChild(value_div);
+				row.appendChild(aibtn_div);
 				div.appendChild(row);
 			});
+			
 			
 			form.appendChild(div);
 			document.getElementsByClassName( "article-body" )[0].prepend( form );
@@ -169,6 +180,38 @@ var Editor, editor;
 		}
 	}
 	
+	function rw(){
+		var that = this;
+		var elem = this.parentNode.previousElementSibling.firstChild
+		var _to_rw = this.parentNode.previousElementSibling.firstChild.value
+		var type = this.parentNode.previousElementSibling.firstChild.name;
+		elem.disabled = true
+		that.disabled = true
+		
+		console.log(_to_rw)
+		fetch("http://localhost/magical-web-presence/ai.php?type="+type+"&rw="+_to_rw)
+		  .then(response => {
+			elem.disabled = false
+			that.disabled = false
+			if (response.ok) {
+			  return response.text();
+			} else {
+			  throw new Error('Network response was not ok');
+			}
+		  })
+		  .then(data => {
+			console.log(data);
+			if(data){
+				elem.value = data;
+			}else{
+				alert("Err: gpt failed: " + data);
+			}
+		  })
+		  .catch(error => {
+			console.error('Error:', error);
+		  });
+	}
+	
 	function save(){
 		document.querySelector('#save_button').disabled = true;
 		document.querySelector('#save_button').style.backgroundColor = 'green';
@@ -189,6 +232,9 @@ var Editor, editor;
 		var markdown = "---\r\n";
 		
 		for (let [key, val] of formData.entries()) {
+			if(key == "last_modified_at"){
+				val = new Date().toISOString().substr(0, 19).replace('T', ' ') + " +0300";
+			}
 			if(key != "markdown"){
 				markdown = markdown + key + ": " + val + "\r\n";
 			}

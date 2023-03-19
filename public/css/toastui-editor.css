@@ -1340,26 +1340,24 @@ table.ProseMirror-selectednode {
 
 
 
-
-.two-column {
-}
-
 .row {
   padding: 5px;
   display: flex;
   flex-wrap: wrap;
 }
 
-.key {
-  display: flex;
-  font-weight: bold;
-  width: 30%;
-}
-
 .value {
   display: flex;
-  width: 70%;
+  width: 97%;
 }
-.value input{
+.aibtn {
+  display: flex;
+  width: 3%;
+}
+.value input, .value textarea{
   width: 100%;
+  font-size: 14px;
+}
+.value textarea{
+  height: 70px;
 }
