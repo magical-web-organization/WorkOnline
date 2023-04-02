@@ -1,0 +1,92 @@
+title: Work Online
+tagline: 'Work smarter, not harder'
+description: 'Looking for ways to work online and earn money? Our website provides valuable information and resources to help you start your online career, find freelance work, and explore remote job opportunities.'
+url: https://workonline.wiki
+repo: WorkOnline
+google_analytics_id: G-S1BCG1NLE6
+
+permalink: ':categories/:title.html'
+timezone: Europe/Istanbul
+
+exclude: ["z_serve.bat", "*.ai", "install.php"]
+
+collections_dir: data
+collections:
+  online-job-opportunities:
+    name: Online job opportunities
+    output: true
+    permalink: /:collection/:name.html
+
+  freelance-work:
+    name: Freelance work
+    output: true
+    permalink: /:collection/:name.html
+
+  remote-work:
+    name: Remote work
+    output: true
+    permalink: /:collection/:name.html
+
+  digital-marketing-and-branding:
+    name: Digital marketing and branding
+    output: true
+    permalink: /:collection/:name.html
+
+  building-an-online-presence:
+    name: Building an online presence
+    output: true
+    permalink: /:collection/:name.html
+
+  online-entrepreneurship:
+    name: Online entrepreneurship
+    output: true
+    permalink: /:collection/:name.html
+
+  crowdfunding-and-fundraising:
+    name: Crowdfunding and fundraising
+    output: true
+    permalink: /:collection/:name.html
+
+  virtual-collaboration-and-communication:
+    name: Virtual collaboration and communication
+    output: true
+    permalink: /:collection/:name.html
+
+  work-from-home-jobs:
+    name: Work-from-home jobs
+    output: true
+    permalink: /:collection/:name.html
+
+  gig-economy:
+    name: Gig economy
+    output: true
+    permalink: /:collection/:name.html
+
+  online-marketplaces-for-work:
+    name: Online marketplaces for work
+    output: true
+    permalink: /:collection/:name.html
+
+  passive-income-opportunities:
+    name: Passive income opportunities
+    output: true
+    permalink: /:collection/:name.html
+
+  affiliate-marketing-and-sponsorships:
+    name: Affiliate marketing and sponsorships
+    output: true
+    permalink: /:collection/:name.html
+
+  blogging-and-content-creation:
+    name: Blogging and content creation
+    output: true
+    permalink: /:collection/:name.html
+
+  e-commerce-and-online-sales:
+    name: E-commerce and online sales
+    output: true
+    permalink: /:collection/:name.html
+
+# Gems
+plugins:
+  - jekyll-sitemap

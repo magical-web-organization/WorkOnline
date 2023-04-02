@@ -4,8 +4,7 @@ _site
 .ruby-version
 .jekyll-cache
 z_serve.bat
-data
-_config.yml
+fix.php
 
 # Numerous always-ignore extensions
 *.diff
